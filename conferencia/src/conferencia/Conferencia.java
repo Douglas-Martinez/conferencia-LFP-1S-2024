@@ -4,6 +4,10 @@
  */
 package conferencia;
 
+import Analizadores.Lexico;
+import Analizadores.Sintactico;
+import java.io.StringReader;
+
 /**
  *
  * @author Douglas
@@ -15,7 +19,19 @@ public class Conferencia {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println("Hello Conferencia");
+        String txt = "OPERAR 1+1;\nOPERAR 1+2*3;";
+        Analizar(txt);
     }
     
+    public static void Analizar(String texto) {
+        StringReader st = new StringReader(texto);
+        Lexico aL = new Lexico(st);
+        Sintactico aS = new Sintactico(aL);
+        
+        try {
+            aS.parse();
+        } catch(Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
 }
