@@ -15,7 +15,8 @@ public class Conferencia {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println("Hello Conferencia");
+        Interfaz_Grafica ig = new Interfaz_Grafica();
+        ig.setVisible(true);
     }
     
 }
