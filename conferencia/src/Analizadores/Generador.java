@@ -2,36 +2,35 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package conferencia;
-
-import Analizadores.Lexico;
-import Analizadores.Sintactico;
-import java.io.StringReader;
+package Analizadores;
 
 /**
  *
  * @author Douglas
  */
-public class Conferencia {
+public class Generador {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Interfaz_Grafica ig = new Interfaz_Grafica();
-        ig.setVisible(true);
+        generar();
     }
     
-    public static void Analizar(String texto) {
-        StringReader st = new StringReader(texto);
-        Lexico aL = new Lexico(st);
-        Sintactico aS = new Sintactico(aL);
-        
+    public static void generar() {
         try {
-            aS.parse();
+            String ruta = "src/Analizadores/";
+            
+            String aFlex[] = {ruta + "Lexico.jflex", "-d", ruta};
+            jflex.Main.generate(aFlex);
+            
+            String aCup[] = {"-destdir", ruta, "-parser", "Sintactico", ruta + "Sintactico.cup"};
+            java_cup.Main.main(aCup);
+            
         } catch(Exception e) {
             System.err.println(e.getMessage());
         }
     }
+    
 }

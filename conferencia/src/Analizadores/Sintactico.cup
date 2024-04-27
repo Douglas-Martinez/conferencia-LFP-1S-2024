@@ -1,0 +1,75 @@
+package Analizadores;
+
+import java_cup.runtime.*;
+
+parser code 
+{:
+    /**
+     *
+        Método al que se llama ante algún error sintáctico
+     *
+    **/
+    public void syntax_error(Symbol s)
+    {
+        System.err.println("Error sintáctico en la linea: " + (s.left) + ", columna: " + (s.right) + ". No se esperaba el componente: " + (s.value) + ".");
+    }
+
+    /**
+     *
+        Método al que se llama en el momento en que ya no es posible una recuperación de errores.
+     *
+    **/
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        System.err.println("Error sintáctico irrecuperable en la línea: " + (s.left) + ", columna: " + (s.right) + ". Componente: " + (s.value) + " no reconocido");
+    }
+:}
+
+terminal String Res_Operar;
+terminal String Sim_PyC, Sim_ParA, Sim_ParC, Sim_Mas, Sim_Menos, Sim_Por, Sim_Div;
+terminal String TK_Entero, TK_Doble;
+terminal UMINUS;
+
+non terminal S0;
+non terminal L_INSTRUCCIONES;
+non terminal INSTRUCCION;
+non terminal Double EXPRESION;
+
+precedence left Sim_Mas, Sim_Menos;
+precedence left Sim_Por, Sim_Div;
+precedence left UMINUS;
+
+
+start with S0;
+
+
+S0 ::= L_INSTRUCCIONES;
+
+L_INSTRUCCIONES ::= L_INSTRUCCIONES INSTRUCCION
+    | INSTRUCCION
+;
+
+INSTRUCCION ::= Res_Operar EXPRESION:a Sim_PyC
+    {:
+        System.out.println("Resultado: " + a);
+    :}
+;
+
+EXPRESION ::= 
+//ARITMÉTICAS
+    EXPRESION:a Sim_Mas EXPRESION:b
+    {: RESULT = a + b; :}
+    | EXPRESION:a Sim_Menos EXPRESION:b
+    {: RESULT = a - b; :}
+    | EXPRESION:a Sim_Por EXPRESION:b
+    {: RESULT = a * b; :}
+    | EXPRESION:a Sim_Div EXPRESION:b
+    {: RESULT = a / b; :}
+    | Sim_ParA EXPRESION:a Sim_ParC
+    {: RESULT = a; :}
+    | Sim_Menos EXPRESION:a
+    {: RESULT = a * -1; :} %prec UMINUS
+    | TK_Entero:a
+    {: RESULT = new Double(a); :}
+    | TK_Doble:a
+    {: RESULT = new Double(a); :}
+;
