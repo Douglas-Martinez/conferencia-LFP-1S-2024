@@ -101,7 +101,7 @@ public class Interfaz_Grafica extends javax.swing.JFrame {
         // TODO add your handling code here:
         String texto = this.jTextArea1.getText();
         if(!texto.equalsIgnoreCase("")) {
-            System.out.println(texto);
+            Conferencia.Analizar(texto);
         } else {
             JOptionPane.showMessageDialog(null, "No hay texto para analizar", "No Texto", JOptionPane.NO_OPTION);
         }
